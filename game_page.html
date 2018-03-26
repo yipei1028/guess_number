@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Guess Number</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="body-container">
+        <div class="game-body">
+            <div class="text-message" id="default-message">Guess a number between 0 - 100</div>
+            <div class="text-message" id="process-message"></div>
+            <div id="inputCol" style="color:gray;">Guess a number</div>
+            <div class="numberPad">
+                <table>
+                    <tr>
+                        <td><input class="keyboard" id="7" onClick="enterValue(7);" type="button" value="7"></td>
+                        <td><input class="keyboard" id="8" onClick="enterValue(8);" type="button" value="8"></td>
+                        <td><input class="keyboard" id="9" onClick="enterValue(9);" type="button" value="9"></td>
+                    </tr>
+                    <tr>
+                        <td><input class="keyboard" id="4" onClick="enterValue(4);" type="button" value="4"></td>
+                        <td><input class="keyboard" id="5" onClick="enterValue(5);" type="button" value="5"></td>
+                        <td><input class="keyboard" id="6" onClick="enterValue(6);" type="button" value="6"></td>
+                    </tr>
+                    <tr>
+                        <td><input class="keyboard" id="1" onClick="enterValue(1);" type="button" value="1"></td>
+                        <td><input class="keyboard" id="2" onClick="enterValue(2);" type="button" value="2"></td>
+                        <td><input class="keyboard" id="3" onClick="enterValue(3);" type="button" value="3"></td>
+                    </tr>
+                    <tr>
+                        <tr>
+                            <td><input class="keyboard" id="0" onClick="enterValue(0);" type="button" value="0"></td>
+                            <td><input class="keyboard" type="button" onclick="del();" value="del"></td>
+                            <td><input class="keyboard" onclick="showMessage();" type="submit" value="Enter"></td>
+                        </tr>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+<script>
+    let answer = Math.floor((Math.random() * 100) + 1); //準備一個隨機的數字，作為答案
+    let leftRange = 0; //要準備一個範圍的左值
+    let rightRange = 100; //要準備一個範圍的右值
+    let userInput = ""; //使用者輸入的值
+
+    //使用者點擊數字鍵盤 得到value
+    function enterValue(num) {
+        userInput = userInput + document.getElementById(num).value;
+        document.getElementById("inputCol").innerHTML = userInput;
+        document.getElementById("inputCol").style.color = "black";
+        //如果使用者猜的和answer一樣就跳出恭喜視窗，並結束遊戲(重新載入頁面)
+    }
+
+    function del() {
+        userInput = "";
+        document.getElementById("inputCol").innerHTML = userInput;
+    }
+
+    //改變畫面上顯示的範圍
+    function showMessage() {
+        //如果使用者輸入大於100
+        if (parseInt(userInput) < leftRange || parseInt(userInput) > rightRange) {
+            alert("請輸入在範圍內的數字！");
+            del();
+        } else {
+            //每一次enter就會改變顯示範圍(跟answer比！)
+            if (parseInt(userInput) < answer) {
+                leftRange = userInput;
+            } else {
+                rightRange = userInput;
+            }
+        }
+
+        if (parseInt(userInput) == answer) {
+            alert("You win the game!!!");
+            window.location.reload();
+        }
+        document.getElementById("process-message").style.display = "inline-block";
+        document.getElementById("default-message").style.display = "none";
+        document.getElementById("process-message").innerHTML = "The range of the answer is from " + leftRange + " to " + rightRange;
+        userInput = "";
+        document.getElementById("inputCol").innerHTML = userInput;
+    }
+
+</script>
